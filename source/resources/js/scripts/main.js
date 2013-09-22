@@ -82,10 +82,10 @@ var BoxCar = {
 			}
 
 			// Animate slide
-			$(this).animate({
+			$(this).stop(true, false).animate({
 				'top': top,
 				'left': left
-			}, 600, function() {
+			}, 400, 'swing', function() {
 				BoxCar.boxContainer.updateSquareRef($this, direction);
 			});
 		});
