@@ -7,7 +7,7 @@
 var BoxCar = {
 	init: function() {
 		this.boxContainer.calcGrid('.box');
-		this.animate('.box');
+		// this.animate('.box');
 	},
 	
 	boxContainer: {
@@ -35,56 +35,66 @@ var BoxCar = {
 			// Set square position reference data
 			this.setSquareRef($squares);
 		},
-		setSquareRef: function(squares) {
+		setSquareRef: function(squares, direction) {
 			$(squares).each(function(index) {
 				var $square = $(this);
 				if ($square.data('position') === undefined ) {
 					$square.data('position', index);
 					console.log("This square's position is ", $square.data('position'));
 				} else {
-					this.updateSquareRef($square);
+					this.updateSquareRef($square, direction);
 				}
 			});
 		},
-		updateSquareRef: function(square) {
+		updateSquareRef: function(square, direction) {
 			var currentPos = square.data('position');
-			if (currentPos < this.gridSquares - 1) {
-				square.data('position', currentPos + 1);
-			} else {
+			if ((currentPos < (this.gridSquares - 1) && direction === 1) || (currentPos > 0 && direction === -1)) {
+				square.data('position', currentPos + direction);
+			} else if (currentPos === 0 && direction === -1) {
+				square.data('position', (this.gridSquares -1));
+			} else if (currentPos === (this.gridSquares -1) && direction === 1) {
 				square.data('position', 0);
 			}
 			return square.data('position');
 		}
 	},
 
-	animate: function(targets) {
+	animate: function(targets, direction) {
 		var top = null,
 			left = null,
 			$target = $(targets);
 
 		$target.each(function(index) {
-			if(($(this).data('position') === 0) || ($(this).data('position') === 3)) {
+			var $this = $(this);
+			if(($(this).data('position') === 2 && direction === 1) || ($(this).data('position') === 3 && direction === 1) || (($(this).data('position') === 0 && direction === -1) || ($(this).data('position') === 1 && direction === -1))) {
 				top = '0%';
 			} else {
 				top = '50%';
 			}
 
-			if(($(this).data('position') === 2) || ($(this).data('position') === 3)) {
+			if(($(this).data('position') === 2 && direction === 1) || ($(this).data('position') === 3 && direction === -1) || (($(this).data('position') === 0 && direction === -1) || ($(this).data('position') === 1 && direction === 1))) {
 				left = '0%';
 			} else {
 				left = '50%';
 			}
+			console.log(direction);
 
 			$(this).animate({
 				'top': top,
 				'left': left
-			}, function() {
-				BoxCar.boxContainer.updateSquareRef($(this));
+			}, 600, function() {
+				BoxCar.boxContainer.updateSquareRef($this, direction);
 			});
 		});
 	}
 }
 
-$('#next, #prev').on('click', function() {
-	BoxCar.animate('.box');
+$('#next').on('click', function(event) {
+	event.preventDefault();
+	BoxCar.animate('.box', 1);
+});
+
+$('#prev').on('click', function(event) {
+	event.preventDefault();
+	BoxCar.animate('.box', -1);
 });
