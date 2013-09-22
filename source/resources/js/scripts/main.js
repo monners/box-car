@@ -69,13 +69,13 @@ var BoxCar = {
 		// Determine 'top' and 'left' values to animate to based on slide position and direction
 		$target.each(function(index) {
 			var $this = $(this);
-			if(($(this).data('position') === 2 && direction === 1) || ($(this).data('position') === 3 && direction === 1) || (($(this).data('position') === 0 && direction === -1) || ($(this).data('position') === 1 && direction === -1))) {
+			if(($this.data('position') === 2 && direction === 1) || ($this.data('position') === 3 && direction === 1) || (($this.data('position') === 0 && direction === -1) || ($this.data('position') === 1 && direction === -1))) {
 				top = '0%';
 			} else {
 				top = '50%';
 			}
 
-			if(($(this).data('position') === 2 && direction === 1) || ($(this).data('position') === 3 && direction === -1) || (($(this).data('position') === 0 && direction === -1) || ($(this).data('position') === 1 && direction === 1))) {
+			if(($this.data('position') === 2 && direction === 1) || ($this.data('position') === 3 && direction === -1) || (($this.data('position') === 0 && direction === -1) || ($this.data('position') === 1 && direction === 1))) {
 				left = '0%';
 			} else {
 				left = '50%';
